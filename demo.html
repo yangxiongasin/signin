@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>淘宝滑动轮播案例</title>
+  <style type="text/css">
+    *{
+      padding: 0;
+    }
+    a {  text-decoration: none;  }
+    ul {  list-style: outside none none;  }
+    .slider-left  .slider-left-panel img, .slider-left-extra {  width: 100%;  height: 298px;  }
+    .slider-left-panel {width: 580px;  height: 298px; }
+    .slider-left-panel img {width: 100%;  height: 298px; }
+    .slider-left-main {width: 1740px;  height: 298px;     position: absolute;}
+    .slider-left {width: 580px; height: 298px;  text-align: center;  position: relative;  overflow: hidden; }
+    .slider-left-panel { position: relative;  float: left;  display: inline;  z-index: 8;  }
+    .slider-left-panel img { width: 100%; border: none;  }
+
+
+    /*.slider-left-extra {  position: relative;  }*/
+    /*.slider-left-nav {z-index: 999; margin-left: -51px;  position: absolute;  left: 50%;  bottom: 4px;  }*/
+    /*.slider-left-nav li {  background: #3e3e3e;  border-radius: 50%;  color: #fff;  cursor: pointer;  margin: 0 2px;  overflow: hidden;  text-align: center;  display: inline-block;  height: 18px;  line-height: 18px;  width: 18px;  }*/
+    /*.slider-left-nav .slider-item-selected {  background: blue;  }*/
+    /*.slider-left-page a{z-index: 999; background: rgba(0, 0, 0, 0.2); color: #fff;  text-align: center;  display: block;  font-size: 22px;  width: 28px;  height: 62px;  line-height: 62px;  margin-top: -31px;  position: absolute;  top: 50%;  }*/
+    /*.slider-left-page a:HOVER {  background: rgba(0, 0, 0, 0.4); }*/
+    .slider-left-nav{
+      width: 80px;
+      height: 12px;
+      display: flex;
+      margin-left: 230px;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .slider-left-item{
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #80898a;
+    }
+    .slider-left-nav .slider-item-selected {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #00e3d0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="slider-left" >
+    <ul class="slider-left-main">
+      <li class="slider-left-panel"><a><img src="./image/banner/1.png"/></a> </li>
+      <li class="slider-left-panel"><a><img src="./image/banner/2.png"/></a> </li>
+      <li class="slider-left-panel"><a><img src="./image/banner/3.png"/></a> </li>
+    </ul>
+
+  </div>
+  <ul class="slider-left-nav">
+    <li class="slider-left-item"></li>
+    <li class="slider-left-item"></li>
+    <li class="slider-left-item"></li>
+  </ul>
+  <script src="./lib/jquery-1.11.3.js"></script>
+<script>
+  function a() {
+    /*判断是否可以循环*/
+    var hasStarted = false;
+    var interval = false;
+    var currentIndex = 0;
+    var width = 580;
+    var length = $(".slider-left-item").length;
+    /*给默认的图片*/
+
+    $(".slider-left-item:not(:first)").removeClass("slider-item-selected");
+    $(".slider-left-item:first").addClass("slider-item-selected");
+    $(".slider-left-page").hide();
+    start();
+
+    /*面面item标签事件*/
+    $(".slider-left-item").hover(function (e) {
+      stop();
+      var currentIndex = $(this).index();
+      $(".slider-left-item").removeClass("slider-item-selected");
+      $(".slider-left-item").eq(currentIndex).addClass("slider-item-selected");
+      $(".slider-left-page").show();
+      goto(currentIndex);
+
+    },function (e) {
+      $(".slider-left-page").hide();
+      start();
+    });
+
+    /*banner图片停止轮播*/
+    $(".slider-left-panel, .slider-left-page").hover(function (e) {
+      $(".slider-left-page").show();
+      clearInterval(interval);
+      stop();
+    },function (e) {
+      $(".slider-left-page").hide();
+      start();
+    });
+    /*开始运行*/
+    function start() {
+      if(!hasStarted){
+        hasStarted = true;
+        interval = setInterval(function () {
+          currentIndex = (++currentIndex+length)%length;
+          var offset = width*currentIndex;
+          $(".slider-left-item").removeClass("slider-item-selected");
+          $(".slider-left-item").eq(currentIndex).addClass("slider-item-selected");
+
+          $(".slider-left-main").animate({marginLeft:"-"+offset+"px"});
+        }, 3000);
+      }
+    }
+    /*停止轮播*/
+    function stop() {
+      clearInterval(interval);
+      hasStarted = false;
+    }
+    function goto(current) {
+      var offset = current*width;
+      $(".slider-left-item").removeClass("slider-item-selected");
+      $(".slider-left-item").eq(current).addClass("slider-item-selected");
+      $(".slider-left-main").animate({marginLeft:"-"+offset+"px"});
+    }
+  }
+  a()
+</script>
+</body>
+</html>
