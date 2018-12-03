@@ -132,3 +132,68 @@ $('.wrap-left .title').click(function() {
 function resetLayout() {
     var length = $leftContainer.find('.discern-list').length;
 }
+
+
+(function () {
+  /*判断是否可以循环*/
+  var hasStarted = false;
+  var interval = false;
+  var currentIndex = 0;
+  var width = 580;
+  var length = $(".slider-left-item").length;
+  /*给默认的图片*/
+
+  $(".slider-left-item:not(:first)").removeClass("slider-item-selected");
+  $(".slider-left-item:first").addClass("slider-item-selected");
+  $(".slider-left-page").hide();
+  start();
+
+  /*面面item标签事件*/
+  $(".slider-left-item").hover(function (e) {
+    stop();
+    var currentIndex = $(this).index();
+    $(".slider-left-item").removeClass("slider-item-selected");
+    $(".slider-left-item").eq(currentIndex).addClass("slider-item-selected");
+    $(".slider-left-page").show();
+    goto(currentIndex);
+
+  },function (e) {
+    $(".slider-left-page").hide();
+    start();
+  });
+
+  /*banner图片停止轮播*/
+  $(".slider-left-panel, .slider-left-page").hover(function (e) {
+    $(".slider-left-page").show();
+    clearInterval(interval);
+    stop();
+  },function (e) {
+    $(".slider-left-page").hide();
+    start();
+  });
+  /*开始运行*/
+  function start() {
+    if(!hasStarted){
+      hasStarted = true;
+      interval = setInterval(function () {
+        currentIndex = (++currentIndex+length)%length;
+        var offset = width*currentIndex;
+        $(".slider-left-item").removeClass("slider-item-selected");
+        $(".slider-left-item").eq(currentIndex).addClass("slider-item-selected");
+
+        $(".slider-left-main").animate({marginLeft:"-"+offset+"px"});
+      }, 3000);
+    }
+  }
+  /*停止轮播*/
+  function stop() {
+    clearInterval(interval);
+    hasStarted = false;
+  }
+  function goto(current) {
+    var offset = current*width;
+    $(".slider-left-item").removeClass("slider-item-selected");
+    $(".slider-left-item").eq(current).addClass("slider-item-selected");
+    $(".slider-left-main").animate({marginLeft:"-"+offset+"px"});
+  }
+})()
