@@ -86,6 +86,8 @@ var template = {
     `
 };
 
+var i = 0;
+
 $('.wrap-left .title').click(function() {
     // 保证最多只有3个识别项
     if($leftContainer.find('.discern-list').length == 3) {
@@ -108,11 +110,13 @@ $('.wrap-left .title').click(function() {
                     <img src="./image/successPic.png" />
                 </div>
                 <div class="discern-desc">
-                    <p>贺成璋</p>
+                    <p>姓名${i}</p>
                 </div>
             </div>
             `
         )
+
+        i++;
     }
 
     // 20秒后自动销毁识别项
@@ -124,3 +128,7 @@ $('.wrap-left .title').click(function() {
 
     clickFlag = !clickFlag;
 });
+
+function resetLayout() {
+    var length = $leftContainer.find('.discern-list').length;
+}
