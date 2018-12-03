@@ -1,0 +1,266 @@
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+body {
+    font-size: 12px;
+    font-family: 'Microsoft Yahei', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    height: 100%;
+    margin: 0;
+    position: relative;
+    color: #666666;
+    overflow: hidden;
+}
+.wrap-bg {
+	background: url('image/bg.png') center center no-repeat;
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+}
+.wrap {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.header {
+	width: 100%;
+	height: 92px;
+	line-height: 92px;
+	border-bottom: 1px solid #ffffff; 
+	color: #fff;
+	font-size: 40px;
+	text-align: center;
+	margin-bottom: 30px;
+}
+.header span {
+	margin: 0 10px;
+}
+.container {
+	width: 1900px;
+	margin: 0 auto;
+	position: relative;
+}
+.customer-card {
+    height: 506px;
+    width: 372px;
+    margin: 175px 22px;
+    float: left;
+    box-shadow: 5px 5px 35px #666;
+    border-radius: 10px;
+}
+.container-left {
+	display: inline-block;
+    height: 910px;
+    width: 1250px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0 95px;
+    overflow: hidden;
+}
+.customer-card-one {
+	position: absolute;
+	left: 416px;
+}
+.customer-card-two {
+	position: absolute;
+	left: 832px;
+}
+.container-left-content {
+	height: 1440px;
+	width: 1000000px;
+}
+.customer-list {
+    display: inline-block;
+    width: 370px;
+    height: 506px;
+    background-color: #fff;
+    box-shadow: 5px 5px 35px #666;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 34px;
+}
+.customer-image-outer {
+	position: absolute;
+    margin: 60px 36px;
+}
+.customer-image {
+    position: relative;
+    margin: 77px 51px;
+    width: 276px;
+    height: 276px;
+    padding: 10px;
+    border-radius: 50%;
+    border: 2px solid #00b3ff;
+        transform: translateZ(0);
+}
+.customer-image .img-wrap {
+    width:100%;
+    height: 100%;
+}
+.effect:before, .effect:after {
+    border-radius: 100%;
+    content: "";
+    position: absolute;
+    width: 252px;
+    height: 252px;
+    box-shadow: 
+                inset 179px 0 0 rgba(30, 140, 209, .2),
+                inset 0 179px 0 rgba(30, 140, 209, .2),
+                inset -179px 0 0 rgba(30, 140, 209, .2),
+                inset 0 -179px 0 rgba(30, 140, 209, .2);
+    transition: box-shadow 0.3s;
+}
+.effect:after {
+    transform: rotate(45deg);
+}
+.effect.active:before, .effect.active:after {
+    box-shadow: inset 10px 0 0 rgba(255, 0, 0, 0.8), 
+                inset 0 10px 0 rgba(252, 150, 0, 0.8), 
+                inset -10px 0 0 rgba(0, 255, 0, 0.8), 
+                inset 0 -10px 0 rgba(0, 150, 255, 0.8);
+}
+.customer-image img, .customer-image .mask {
+	width: 252px;
+    height: 252px;
+    border-radius: 50%;
+    position: absolute;
+}
+ .customer-image .mask  {
+    width: 254px;
+    height: 254px;
+    top:9px;
+    left:9px;
+    background:#fff;
+    transition: all .2s;
+ }
+.customer-image .mask.active {
+    background: transparent;
+}
+.customer-list p {
+	width: 100%;
+	height: 76px;
+	line-height: 76px;
+	text-align: center;
+    position: relative;
+}
+.customer-list p span {
+	display: inline-block;
+    width: 100%;
+    padding-left: 100px;
+    border-radius: 0 0 10px 10px;
+    font-size: 24px
+}
+.customer-list p span.success {
+    padding-left: 120px;
+    background: linear-gradient(to bottom, #63CF11, #01B457);
+}
+.customer-list p span.fail {
+    background: linear-gradient(to bottom, #F9D631, #F36102);
+}
+.customer-list p img {
+    position: absolute;
+    bottom: 0;
+    left: 30px;
+}
+.customer-list p img.fail {
+    left: 60px;
+}
+.container-right {
+	float: right;
+	width: 407px;
+	margin-left: 40px;
+	overflow: hidden;
+	height: 910px;
+}
+.container-right dd {
+	position: relative;
+	display: inline-block;
+	height: 190px;
+	width: 362px;
+	background-image: linear-gradient(to right, transparent, #0083f7, #00edfd);
+	margin-bottom: 50px;
+	font-size: 36px;
+	color: #fff;
+}
+.container-right dd:before {
+	content: " ";
+    display: block;
+    position: absolute;
+    width: 362px;
+    height: 190px;
+    border: 5px solid;
+    z-index: 10;
+    box-sizing: border-box;
+    animation: clipAni 4s infinite linear;
+    border-image: linear-gradient(90deg, #00ff65 0%, transparent 100%) 30 30;
+}
+.container-right dd:after {
+	content: "";
+    display: block;
+    height: 190px;
+	width: 362px;
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    z-index: -1;
+    background-image: linear-gradient(to right, transparent, #0083f7, #00edfd);
+    box-shadow: 5px 5px 35px #666;
+} 
+.container-right dd >img {
+    width: 170px;
+    height: 190px;
+}
+.container-right dd p {
+	position: absolute;
+    top: 0px;
+    margin-left: 190px;
+    margin-top: 40px;
+}
+.container-right p span {
+	display: inline-block;
+    width: 100%;
+}
+.container-right p span:last-child {
+	line-height: 60px;
+	font-size: 20px;
+}
+.container-right a {
+	position: absolute;
+    bottom: -9px;
+    right: 0;
+}
+.container-right-init >div { 
+    width: 170px;
+    height: 190px;
+    background-color: #fff;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0px 50px;
+}
+.container-right-init >div >img {
+	width: 80px !important;
+	height: 80px !important;
+}
+.container-right-init p {
+    margin-left: 230px !important;
+    margin-top: 65px !important;
+}
+.container-right-init span {
+	font-size: 36px !important;
+}
+@keyframes clipAni {
+      0%, 100% {
+          clip:rect(0px,362px,190px,359px);
+      }
+      25% {
+          clip:rect(0px,362px,3px,0px);
+      }
+      50% {
+          clip:rect(0px,3px,190px,0px);
+      }
+      75% {
+          clip:rect(187px,362px,190px,0px);
+      }
+}

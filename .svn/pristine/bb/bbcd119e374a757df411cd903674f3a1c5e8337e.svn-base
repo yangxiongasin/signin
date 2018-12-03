@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <title>智能考勤</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+</head>
+<body class='wrap-bg'>
+    <div class='wrap'>
+        <div class='header'>
+            <img src='css/image/logo.png' style='position: absolute; top: 20px; left: 80px;'/>
+            <span class='date'></span>
+            <span class='week'></span>
+            <span class='time'></span>
+        </div>
+	    <div class='container'>
+			<object width='1440' height='910' classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://download.videolan.org/pub/videolan/vlc/last/win32/axvlc.cab' id='vlc' name='vlc' class='vlcPlayer' events='True'>
+			    <param name='Src' value='rtsp://admin:aif@2018@10.21.38.10' />
+			    <param name='ShowDisplay' value='True' />
+			    <param name='AutoLoop' value='False' />
+			    <param name='AutoPlay' value='True' />
+			    <param name='Controls' value='False' />
+			</object>
+            <div class='container-left'><div class='container-left-content'></div></div>
+            <div class='container-right'>
+	            <dl>
+	                 <dd class='container-right-init'>
+	                    <div>
+	                        <img src='css/image/photo.png'/>
+	                    </div>
+	                    <p>
+	                       <span>We</span>
+	                    </p>
+	                 </dd>
+	                 <dd class='container-right-init'>
+	                    <div>
+	                        <img src='css/image/photo.png'/>
+	                    </div>
+	                    <p>
+	                       <span>are</span>
+	                    </p>
+	                 </dd>
+	                 <dd class='container-right-init'>
+	                    <div>
+	                        <img src='css/image/photo.png'/>
+	                    </div>
+	                    <p>
+	                       <span>ready</span>
+	                    </p>
+	                 </dd>
+	                 <dd class='container-right-init'>
+	                    <div>
+	                        <img src='css/image/photo.png'/>
+	                    </div>
+	                    <p>
+	                       <span>now</span>
+	                    </p>
+	                 </dd>
+	            </dl>
+            </div>
+	    </div>
+    </div>
+<script type="text/javascript" src="lib/jquery-1.11.3.js"></script>
+<script>
+     var testData = {};
+     var index = 1;
+     var ms = 0;
+     var wsData = [];
+     $(function () {
+    	
+    	getDate();
+    	
+    	systemTime();
+    	
+    	getData();
+    	    	
+    });
+    
+    function getDate() {
+        var dateTime = new Date();
+        var yy = dateTime.getFullYear();
+        var mon = dateTime.getMonth();
+        var day = dateTime.getDate();
+        var str = "星期" + "日一二三四五六".charAt(new Date().getDay());
+        $('.header .week').text(str);
+        $('.header .date').text(yy + '年' + extra((mon + 1)) + '月' + extra(day) + '日');
+    }
+    
+    function systemTime() {
+        var slidint;
+        clearTimeout(slidint);
+        
+        var dateTime = new Date();
+        var hh = dateTime.getHours();
+        var mm = dateTime.getMinutes();
+        var ss = dateTime.getSeconds();
+
+        hh = extra(hh);
+        mm = extra(mm);
+        ss = extra(ss);
+
+        $('.header .time').text(hh + ":" + mm + ":" + ss);
+
+       slidint = setTimeout(systemTime, 1000);
+        
+    }
+
+    function extra(x) {
+    	return x < 10 ? "0" + x : x;
+    }
+    
+    function getData() {
+    	 
+    	  try {
+    		 
+   			 var ws = new WebSocket("ws://10.21.38.67:58000/chat");
+
+	   		 ws.onopen = function(e){
+
+	   		 };
+	   		 ws.onmessage = function(e){
+	             console.log("获取ws数据:" + e.data);
+	             	             
+	   			 var data = JSON.parse(e.data);
+	   			 
+	   			 wsData.push(JSON.parse(data));
+	   			 
+	   			 renderRight (JSON.parse(data));
+	         };
+    			
+		} catch (ex) {
+   			
+   		    alert(ex.message);
+   		   
+		}
+    	  
+ 		//fff();
+		  
+		var _interval = setInterval (function () {
+			
+			if ($(".container-right").find("dd").length > 10) {
+				
+				$(".container-right").find("dd:gt(3)").remove();
+				
+			}
+			
+  			renderLeft ();
+
+		}, 300);
+
+    }
+    
+    function fff () {
+    	 var timeout;
+         clearTimeout(timeout);
+         testData = {
+  		    "image": "css/image/1.png",
+  	 	    "name": "测试人员"+index,
+  	 	    "time": "2018-09-04 12:00:00",
+  	 	    "sex": Math.random() > 0.5 ? "男" : "女"
+         }
+          console.log("获取测试数据:" + JSON.stringify(testData));
+          index++;
+          wsData.push(testData);
+          renderRight (testData);
+          if (index < 10) {
+              timeout = setTimeout(fff, 2000); 
+          }
+     }
+    
+    function renderLeft () {
+       
+	       if (wsData.length) {
+	    	       	   
+	    	   ms = 0;
+	    	   
+	    	   console.log("开始渲染");
+	    	   
+	    	   var id = Math.floor(Math.random() * 100000),
+	               len = $(".customer-card").length;
+	    	   
+	    	   if (wsData[0]) {
+	    		   
+	    		   if (len === 0) {
+	
+		   			    var $iframe = $("<iframe class='customer-card customer-card-one' src='iframe.html?id=" + id + "' id='" + id + "' scrolling='no'></iframe>")
+				           .appendTo($(".container-left-content"))
+				           .data("data", wsData[0]);
+		   			    
+		   			    wsData.shift();
+	
+		   		   } else if (len === 1) {
+		   			   
+						 var $iframe = $("<iframe class='customer-card customer-card-two' src='iframe.html?id=" + id + "' id='" + id + "' scrolling='no'></iframe>")
+							   .appendTo($(".container-left-content"))
+							   .data("data", wsData[0]);
+						 
+						 wsData.shift();
+		   			   
+					     $(".customer-card-one").animate({left: 0}, 250, '',function() {
+	
+							 $(this).removeClass("customer-card-one");
+	
+						 });
+					     
+					     $(".customer-card-two").animate({left: 416}, 250, '',function() {
+	
+							 $(this).removeClass("customer-card-two");
+	
+						 });
+		   			   
+		   		   } else {
+		   			   
+		   	   		    var $iframe = $("<iframe class='customer-card' src='iframe.html?id=" + id + "' id='" + id + "' scrolling='no'></iframe>")
+		   		           .appendTo($(".container-left-content"))
+		   		           .data("data", wsData[0]);
+		   	   		    
+		   	   		    wsData.shift();
+		   	   		    	
+		   	   		    len >= 3 && $(".container-left").stop().animate({scrollLeft: 416 * (len - 3 + 1)}, 250);
+		   	   		    
+		   		   }
+	    	
+	    	   }
+	    	   
+	       } else {
+		    		   
+	 		   if (ms < 100) {
+	    			  
+	    		   ms++;
+	   			   
+	   		   } else {
+	   			   
+	   				var len = $(".customer-card").length;
+	   				
+	   				if (len === 1) {
+	   					
+	   					$(".customer-card").animate({left: 0}, 200, '',function() {
+
+	   						 $(this).remove();
+
+	   				   });
+	   					
+	   				} else {
+	   					
+	   					 $(".container-left").stop().animate({scrollLeft: 416 * len}, 200, '', function() {
+	   				
+	   						  $(".container-left-content").empty();
+	   						  
+	   						  $(".container-left").scrollLeft(0);
+	   						  
+	   				     });
+	   					
+	   				}
+	  				    			   
+	   		   }
+		    		   	           
+	      }
+	       
+    }
+
+    function renderRight (data) {
+    	
+        if (data.name === '100001' || data.name === '100002') return;
+        
+        var sex = {
+        	"男": "male",	
+        	"女": "female",	
+        }[data.sex];
+        
+        $(".container-right").find("dd").css("top", 0);
+
+        $([
+            "<dd>",
+	             "<img src='",  data.image ,"'/>",
+	             "<p>",
+		            "<span>",  data.name ,"</span>",
+		            "<span>",  data.time.split(" ")[1] ,"</span>",
+	             "</p>",
+	             "<a><img src='css/image/", sex ,"-", Math.floor(Math.random()*2) ,".png'/></a>",
+            "</dd>",
+        ].join("")).prependTo($(".container-right").find("dl"));
+
+        $(".container-right").scrollTop(240).animate({scrollTop: 0}, 300);
+
+    }
+</script>
+</body>
+</html>
