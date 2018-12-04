@@ -104,16 +104,25 @@ body {
 .wrap-left .discern-container {
     position: relative;
     top: 214px;
-    margin: 0 auto;
-    display: table;
+    left: 166px;
+    width: 657px;
+    overflow: hidden;
 }
 
-@keyframes discernIn {
-    from {
-        opacity: 0.2;
+.wrap-left .discern-content {
+    width: 10000px;
+    transition: transform 1s ease;
+    transform: translateX(219px);
+}
+
+@keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        transform: translate3d(100%, 0, 0)
     }
     to {
         opacity: 1;
+        transform: none
     }
 }
 
@@ -125,7 +134,8 @@ body {
     background-image: url(../image/discern-bg.png);
     background-size: 100%;
     background-repeat: no-repeat;
-    animation: discernIn 1s ease;
+    animation: fadeInRight 1s ease;
+    animation-fill-mode: both;
 }
 
 .wrap-left .discern-picture {
@@ -164,6 +174,7 @@ body {
 
 .wrap-right .discern-container {
     height: 326px;
+    margin-bottom: 20px;
     overflow: hidden;
 }
 
