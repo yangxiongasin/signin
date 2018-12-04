@@ -127,19 +127,16 @@ body {
     }
 }
 
-.wrap-left .discern-list {
+.iframe-body .discern-list {
     float: left;
-    margin: 0 25px;
     width: 169px;
     height: 237px;
     background-image: url(../image/discern-bg.png);
     background-size: 100%;
     background-repeat: no-repeat;
-    animation: fadeInRight 1s ease;
-    animation-fill-mode: both;
 }
 
-.wrap-left .discern-picture {
+.iframe-body .discern-list .discern-picture {
     width: 110px;
     height: 110px;
     border-radius: 55px;
@@ -159,12 +156,12 @@ body {
     text-align: center;
 }
 
-.wrap-left .discern-list.success .discern-desc p:last-child {
+.iframe-body .discern-list .discern-list.success .discern-desc p:last-child {
     color: #fff;
     font-size: 20px;
 }
 
-.wrap-left .discern-list.fail .discern-desc p {
+.iframe-body .discern-list.discern-list.fail .discern-desc p {
     line-height: 48px;
 }
 
@@ -238,7 +235,25 @@ body {
     background: #00e3d0;
 }
 
-#object {
-    z-index: 0;
-    position: relative;
+@keyframes in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.iframe {
+    margin: 0 25px;
+    width: 173px;
+    height: 240px;
+    animation: in 1s ease;
+    animation-fill-mode: both;
+    background-color: #FFF;
+}
+
+.iframe-body {
+    background-color: #00e3d0;
 }

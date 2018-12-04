@@ -125,6 +125,30 @@ var clickFlag = true;
 var $leftContainer = $('.wrap-left .discern-content');
 var $rightContainer = $('.wrap-right .discern-container');
 
+function template(data, flag) {
+    var template = {
+        success: '<div class="discern-list success">' +
+        '<div class="discern-picture">' +
+        '<img src="'+ data.image +'" />' +
+        '</div>' +
+        '<div class="discern-desc">' +
+        '<p>欢迎您!</p>' +
+        '<p>'+ data.name +'</p>' +
+        '</div>' +
+        '</div>',
+        fail: '<div class="discern-list fail">' +
+        '<div class="discern-picture">' +
+        '<img src="./image/failPic.png" />' +
+        '</div>' +
+        '<div class="discern-desc">' +
+        '<p>欢迎贵宾!</p>' +
+        '</div>' +
+        '</div>'
+    };
+
+    return flag ? template.success : template.fail
+}
+
 function checkName(name) {
     return name != '100001' && name != '100002';
 }
@@ -221,12 +245,11 @@ $('.header').click(function () {
 
     // 识别结果
     var checkFlag = checkName(data.name);
-    var id = Math.floor(Math.random() * 100000);
 
     // 载入HTML模板
-    var $dom = $("<iframe class='iframe' src='iframe.html?id=" + id + "' id='" + id + "' scrolling='no'></iframe>").data("data", data);
+    var $dom = template(data, checkFlag);
 
-    switch ($leftContainer.find('.iframe').length) {
+    switch ($leftContainer.find('.discern-list').length) {
         case 0:
             translateX = 219;
             break;
@@ -269,8 +292,8 @@ $('.header').click(function () {
     clickFlag = ! clickFlag;
 
     // 20秒后自动销毁识别项
-    // timeout = setTimeout(function() {
-    //     $leftContainer.empty();
-    //     $leftContainer.css('transform', 'translateX(219px)');
-    // }, 10000);
+    timeout = setTimeout(function() {
+        $leftContainer.empty();
+        $leftContainer.css('transform', 'translateX(219px)');
+    }, 10000);
 });
