@@ -130,7 +130,9 @@ function checkName(name) {
 }
 
 var timeout,
-    translateX = 219;
+    ms = 0,
+    wsData = [],
+    scaleX = 219;
 
 try {
 
@@ -139,62 +141,9 @@ try {
     ws.onmessage = function (e) {
         
         var data = JSON.parse(JSON.parse(e.data));
-        console.log(data, typeof data)
 
-        clearTimeout(timeout);
+        wsData.push(data);
 
-        // 识别结果
-        var checkFlag = checkName(data.name);
-        var id = Math.floor(Math.random() * 100000);
-
-        // 载入HTML模板
-        var $dom = $("<iframe class='iframe' src='iframe.html?id=" + id + "' id='" + id + "' scrolling='no' seamless frameborder='0'></iframe>").data("data", data);
-
-        switch ($leftContainer.find('.iframe').length) {
-            case 0:
-                translateX = 219;
-                break;
-
-            case 1:
-                translateX = 109;
-                break;
-
-            case 2:
-                translateX = 0;
-                break;
-
-            default:
-                translateX -= 219;
-                break;
-        }
-
-        $leftContainer.css('transform', 'translateX('+ translateX +'px)');
-        
-        $leftContainer.append($dom);
-
-        if (checkFlag) {
-            // 保证最多只有8个识别项
-            if ($rightContainer.find('.discern-list').length == 8) {
-                $rightContainer.find('.discern-list:last-child').remove();
-            }
-
-            $rightContainer.prepend(
-                '<div class="discern-list">' +
-                '<div class="discern-picture">' +
-                '<img src="'+ data.image +'" />' +
-                '</div>' +
-                '<div class="discern-desc">' +
-                '<p>'+ data.name +'</p>' +
-                '</div>' +
-                '</div>'
-            )
-        }
-
-        // 20秒后自动销毁识别项
-        timeout = setTimeout(function() {
-            $leftContainer.empty();
-            $leftContainer.css('transform', 'translateX(219px)');
-        }, 20000);
     };
 
 } catch (ex) {
@@ -203,73 +152,111 @@ try {
 
 }
 
-// var clickFlag = true;
+var _interval = setInterval (function () {
+			
+    renderLeft ();
 
-// $('.header').click(function () {
-//     var DATA = [{
-//         name: '贺成璋',
-//         image: "./image/successPic.png"
-//     },{
-//         name: '杨雄',
-//         image: "./image/failPic.png"
-//     }]
+}, 300);
 
-//     data = DATA[clickFlag? 0 : 1];
+function renderLeft () {
+       
+    if (wsData.length) {
+                   
+        ms = 0;
+        
+        var id = Math.floor(Math.random() * 100000),
+            len = $leftContainer.find('.customer-card').length;
+        
+        if (wsData[0]) {
 
-//     clearTimeout(timeout);
+            if (checkName(wsData[0].name)) { // 识别结果
+                // 保证最多只有8个识别项
+                if ($rightContainer.find('.discern-list').length == 8) {
+                    $rightContainer.find('.discern-list:last-child').remove();
+                }
 
-//     // 识别结果
-//     var checkFlag = checkName(data.name);
-//     var id = Math.floor(Math.random() * 100000);
+                $rightContainer.prepend(
+                    '<div class="discern-list">' +
+                        '<div class="discern-picture">' +
+                            '<img src="'+ wsData[0].image +'" />' +
+                        '</div>' +
+                        '<div class="discern-desc">' +
+                            '<p>'+ wsData[0].name +'</p>' +
+                            '<p>'+ wsData[0].time +'</p>' +
+                        '</div>' +
+                    '</div>'
+                )
+            }
+            
+            if (len === 0) {
+                var $iframe = $("<iframe class='customer-card customer-card-one' src='iframe.html?id=" + id + "' id='" + id + "' scrolling='no' frameborder='0'></iframe>")
+                .appendTo($leftContainer)
+                .data("data", wsData[0]);
+                
+                wsData.shift();
 
-//     // 载入HTML模板
-//     var $dom = $("<iframe class='iframe' src='iframe.html?id=" + id + "' id='" + id + "' scrolling='no'></iframe>").data("data", data);
+            } else if (len === 1) {
 
-//     switch ($leftContainer.find('.iframe').length) {
-//         case 0:
-//             translateX = 219;
-//             break;
+                $leftContainer.css("transform", "translateX(109px)")
+                
+                var $iframe = $("<iframe class='customer-card customer-card-two' src='iframe.html?id=" + id + "' id='" + id + "' scrolling='no' frameborder='0'></iframe>")
+                    .appendTo($leftContainer)
+                    .data("data", wsData[0]);
+                
+                wsData.shift();
+                
+                $(".customer-card-one").animate({left: 0}, 250, '',function() {
 
-//         case 1:
-//             translateX = 109;
-//             break;
+                    $(this).removeClass("customer-card-one");
 
-//         case 2:
-//             translateX = 0;
-//             break;
+                });
+                
+                $(".customer-card-two").animate({left: 219}, 250, '',function() {
 
-//         default:
-//             translateX -= 219;
-//             break;
-//     }
+                    $(this).removeClass("customer-card-two");
 
-//     $leftContainer.css('transform', 'translateX('+ translateX +'px)');
+                });
+                
+            } else {
+
+                    len >= 2 && $leftContainer.css("transform", "translateX("+ -219 * (len - 2) +"px)")
+                
+                    var $iframe = $("<iframe class='customer-card' src='iframe.html?id=" + id + "' id='" + id + "' scrolling='no' frameborder='0'></iframe>")
+                    .appendTo($leftContainer)
+                    .data("data", wsData[0]);
+                    
+                    wsData.shift();
+
+            }
+
+        }
+        
+    } else {
+                
+         if (ms < 100) {
+               
+            ms++;
+               
+           } else {
+               
+                var len = $(".customer-card").length;
+                
+                if (len === 1) {
+                    
+                    $(".customer-card").animate({left: 0}, 1000, '',function() {
+
+                         $(this).remove();
+
+                   });
+                    
+                } else {
+                    
+                     $leftContainer.stop().empty().css("transform", "translateX("+ 219 * len +"px)");
+                    
+                }
+                                  
+           }
+                               
+   }
     
-//     $leftContainer.append($dom);
-
-//     if (checkFlag) {
-//         // 保证最多只有8个识别项
-//         if ($rightContainer.find('.discern-list').length == 8) {
-//             $rightContainer.find('.discern-list:last-child').remove();
-//         }
-
-//         $rightContainer.prepend(
-//             '<div class="discern-list">' +
-//             '<div class="discern-picture">' +
-//             '<img src="'+ data.image +'" />' +
-//             '</div>' +
-//             '<div class="discern-desc">' +
-//             '<p>'+ data.name +'</p>' +
-//             '</div>' +
-//             '</div>'
-//         )
-//     }
-
-//     clickFlag = ! clickFlag;
-
-//     // 20秒后自动销毁识别项
-//     // timeout = setTimeout(function() {
-//     //     $leftContainer.empty();
-//     //     $leftContainer.css('transform', 'translateX(219px)');
-//     // }, 10000);
-// });
+}

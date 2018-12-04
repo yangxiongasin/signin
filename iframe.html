@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-
+<!doctype html>
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta name="renderer" content="webkit" />
-    <meta http-equiv="Cache-Control" content="no-transform" />
-    <title>亚信全域人工智能平台-人脸识别·智能门票</title>
-    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+    <meta charset="utf-8">
+    <title></title>
     <link rel="stylesheet" type="text/css" href="css/index.css" />
 </head>
 
-<body class='iframe-body'>
+<body class="iframe-body">
+    <div class="discern-list"></div>
     <script type="text/javascript" src="lib/jquery-1.11.3.js"></script>
     <script>
         $(function () {
@@ -25,31 +20,31 @@
 
                 var checkFlag = data.name != '100001' && name != '100002';
 
-                var template = {
-                    success: 
-                        '<div class="discern-list success">' +
-                            '<div class="discern-picture">' +
-                                '<img src="'+ data.image +'" />' +
-                            '</div>' +
-                            '<div class="discern-desc">' +
-                                '<p>欢迎您!</p>' +
-                                '<p>'+ data.name +'</p>' +
-                            '</div>' +
-                        '</div>',
-                    fail:
-                        '<div class="discern-list fail">' +
-                            '<div class="discern-picture">' +
-                                '<img src="./image/failPic.png" />' +
-                            '</div>' +
-                            '<div class="discern-desc">' +
-                                '<p>欢迎贵宾!</p>' +
-                            '</div>' +
-                        '</div>'
-                };
+                var $template = $([
+                    '<div class="discern-picture">',
+                        '<img src="', data.image ,'" />',
+                        '<div class="effect"></div>',
+                    '</div>',
+                    '<div class="discern-desc"></div>',
+                ].join('')),
+                $dom = $(".discern-list");
 
-                var $dom = checkFlag ? template.success : template.fail;
+                var template;
+                if (checkFlag) {
+                    template = '<p>欢迎您!</p><p>'+ data.name +'</p>';
+                } else {
+                    template = '<p>欢迎贵宾!</p>';
+                }
 
-                $("body").append($dom);
+                $dom.addClass(checkFlag? "success" : "fail").append($template).find('.discern-desc').html(template);
+
+            	text = checkFlag ? "欢迎您" + data.name : "欢迎贵宾";
+             
+                var url = "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=9&text=" + encodeURI(text); 
+
+                var audio = new Audio(url);
+                
+                audio.play();
             }
         });
     </script>
