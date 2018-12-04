@@ -127,29 +127,23 @@ var $rightContainer = $('.wrap-right .discern-container');
 
 function template(data, flag) {
     var template = {
-        success:
-            `
-        <div class="discern-list success">
-            <div class="discern-picture">
-                <img src="${data.image}" />
-            </div>
-            <div class="discern-desc">
-                <p>欢迎您!</p>
-                <p>${data.name}</p>
-            </div>
-        </div>
-        `,
-        fail:
-            `
-        <div class="discern-list fail">
-            <div class="discern-picture">
-                <img src="./image/failPic.png" />
-            </div>
-            <div class="discern-desc">
-                <p>欢迎贵宾!</p>
-            </div>
-        </div>
-        `
+        success: '<div class="discern-list success">' +
+        '<div class="discern-picture">' +
+        '<img src="'+ data.image +'" />' +
+        '</div>' +
+        '<div class="discern-desc">' +
+        '<p>欢迎您!</p>' +
+        '<p>'+ data.name +'</p>' +
+        '</div>' +
+        '</div>',
+        fail: '<div class="discern-list fail">' +
+        '<div class="discern-picture">' +
+        '<img src="./image/failPic.png" />' +
+        '</div>' +
+        '<div class="discern-desc">' +
+        '<p>欢迎贵宾!</p>' +
+        '</div>' +
+        '</div>'
     };
 
     return flag ? template.success : template.fail
@@ -162,146 +156,144 @@ function checkName(name) {
 var timeout,
     translateX = 219;
 
-try {
+// try {
 
-    var ws = new WebSocket("ws://10.21.38.67:58000/chat");
+//     var ws = new WebSocket("ws://10.21.38.67:58000/chat");
 
-    ws.onmessage = function (e) {
+//     ws.onmessage = function (e) {
 
-        var data = JSON.parse(e.data);
+//         var data = JSON.parse(e.data);
 
-        clearTimeout(timeout);
+//         clearTimeout(timeout);
 
-        // 识别结果
-        var checkFlag = checkName(data.name);
+//         // 识别结果
+//         var checkFlag = checkName(data.name);
 
-        // 载入HTML模板
-        var $dom = template(data, checkFlag);
+//         // 载入HTML模板
+//         var $dom = template(data, checkFlag);
 
-        switch ($leftContainer.find('.discern-list').length) {
-            case 0:
-                translateX = 219;
-                break;
+//         switch ($leftContainer.find('.discern-list').length) {
+//             case 0:
+//                 translateX = 219;
+//                 break;
 
-            case 1:
-                translateX = 109;
-                break;
+//             case 1:
+//                 translateX = 109;
+//                 break;
 
-            case 2:
-                translateX = 0;
-                break;
+//             case 2:
+//                 translateX = 0;
+//                 break;
 
-            default:
-                translateX -= 219;
-                break;
-        }
-
-        $leftContainer.css('transform', `translateX(${translateX}px)`);
-        
-        $leftContainer.append($dom);
-
-        if (checkFlag) {
-            // 保证最多只有8个识别项
-            if ($rightContainer.find('.discern-list').length == 8) {
-                $rightContainer.find('.discern-list:last-child').remove();
-            }
-
-            $rightContainer.prepend(
-                `
-                <div class="discern-list">
-                    <div class="discern-picture">
-                        <img src="${data.image}" />
-                    </div>
-                    <div class="discern-desc">
-                        <p>${data.name}</p>
-                    </div>
-                </div>
-                `
-            )
-        }
-
-
-        // 20秒后自动销毁识别项
-        timeout = setTimeout(() => {
-            $leftContainer.empty();
-            $leftContainer.css('transform', 'translateX(219px)');
-        }, 20000);
-    };
-
-} catch (ex) {
-
-    alert(ex.message);
-
-}
-
-// var clickFlag = true;
-
-// $('.header').click(function () {
-//     var DATA = [{
-//         name: '贺成璋',
-//         image: "./image/successPic.png"
-//     },{
-//         name: '杨雄',
-//         image: "./image/failPic.png"
-//     }]
-
-//     data = DATA[clickFlag? 0 : 1];
-
-//     clearTimeout(timeout);
-
-//     // 识别结果
-//     var checkFlag = checkName(data.name);
-
-//     // 载入HTML模板
-//     var $dom = template(data, checkFlag);
-
-//     switch ($leftContainer.find('.discern-list').length) {
-//         case 0:
-//             translateX = 219;
-//             break;
-
-//         case 1:
-//             translateX = 109;
-//             break;
-
-//         case 2:
-//             translateX = 0;
-//             break;
-
-//         default:
-//             translateX -= 219;
-//             break;
-//     }
-
-//     $leftContainer.css('transform', `translateX(${translateX}px)`);
-    
-//     $leftContainer.append($dom);
-
-//     if (checkFlag) {
-//         // 保证最多只有8个识别项
-//         if ($rightContainer.find('.discern-list').length == 8) {
-//             $rightContainer.find('.discern-list:last-child').remove();
+//             default:
+//                 translateX -= 219;
+//                 break;
 //         }
 
-//         $rightContainer.prepend(
-//             `
-//             <div class="discern-list">
-//                 <div class="discern-picture">
-//                     <img src="${data.image}" />
-//                 </div>
-//                 <div class="discern-desc">
-//                     <p>${data.name}</p>
-//                 </div>
-//             </div>
-//             `
-//         )
-//     }
+//         $leftContainer.css('transform', `translateX(${translateX}px)`);
+        
+//         $leftContainer.append($dom);
 
-//     clickFlag = ! clickFlag;
+//         if (checkFlag) {
+//             // 保证最多只有8个识别项
+//             if ($rightContainer.find('.discern-list').length == 8) {
+//                 $rightContainer.find('.discern-list:last-child').remove();
+//             }
 
-//     // 20秒后自动销毁识别项
-//     timeout = setTimeout(() => {
-//         $leftContainer.empty();
-//         $leftContainer.css('transform', 'translateX(219px)');
-//     }, 10000);
-// });
+//             $rightContainer.prepend(
+//                 `
+//                 <div class="discern-list">
+//                     <div class="discern-picture">
+//                         <img src="${data.image}" />
+//                     </div>
+//                     <div class="discern-desc">
+//                         <p>${data.name}</p>
+//                     </div>
+//                 </div>
+//                 `
+//             )
+//         }
+
+
+//         // 20秒后自动销毁识别项
+//         timeout = setTimeout(() => {
+//             $leftContainer.empty();
+//             $leftContainer.css('transform', 'translateX(219px)');
+//         }, 20000);
+//     };
+
+// } catch (ex) {
+
+//     alert(ex.message);
+
+// }
+
+var clickFlag = true;
+
+$('.header').click(function () {
+    var DATA = [{
+        name: '贺成璋',
+        image: "./image/successPic.png"
+    },{
+        name: '杨雄',
+        image: "./image/failPic.png"
+    }]
+
+    data = DATA[clickFlag? 0 : 1];
+
+    clearTimeout(timeout);
+
+    // 识别结果
+    var checkFlag = checkName(data.name);
+
+    // 载入HTML模板
+    var $dom = template(data, checkFlag);
+
+    switch ($leftContainer.find('.discern-list').length) {
+        case 0:
+            translateX = 219;
+            break;
+
+        case 1:
+            translateX = 109;
+            break;
+
+        case 2:
+            translateX = 0;
+            break;
+
+        default:
+            translateX -= 219;
+            break;
+    }
+
+    $leftContainer.css('transform', `translateX(${translateX}px)`);
+    
+    $leftContainer.append($dom);
+
+    if (checkFlag) {
+        // 保证最多只有8个识别项
+        if ($rightContainer.find('.discern-list').length == 8) {
+            $rightContainer.find('.discern-list:last-child').remove();
+        }
+
+        $rightContainer.prepend(
+            '<div class="discern-list">' +
+            '<div class="discern-picture">' +
+            '<img src="'+ data.image +'" />' +
+            '</div>' +
+            '<div class="discern-desc">' +
+            '<p>'+ data.name +'</p>' +
+            '</div>' +
+            '</div>'
+        )
+    }
+
+    clickFlag = ! clickFlag;
+
+    // 20秒后自动销毁识别项
+    timeout = setTimeout(() => {
+        $leftContainer.empty();
+        $leftContainer.css('transform', 'translateX(219px)');
+    }, 10000);
+});
