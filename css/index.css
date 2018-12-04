@@ -107,6 +107,7 @@ body {
     left: 166px;
     width: 657px;
     overflow: hidden;
+    z-index: 9;
 }
 
 .wrap-left .discern-content {
@@ -235,4 +236,9 @@ body {
     height: 12px;
     border-radius: 50%;
     background: #00e3d0;
+}
+
+#object {
+    z-index: 0;
+    position: relative;
 }
