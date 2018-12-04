@@ -83,6 +83,14 @@ body {
     background-repeat: no-repeat;
 }
 
+.wrap-left .moniter {
+    position: absolute;
+    top: 70px;
+    left: 73.5px;
+    width: 842px;
+    height: 472px;
+}
+
 .wrap-left .title {
     position: absolute;
     bottom: 64px;
@@ -201,8 +209,7 @@ body {
     width: 80px;
     height: 12px;
     display: flex;
-    margin-left: 277px;
-    margin-top: 10px;
+    margin: 10px auto 0px;
     justify-content: space-between;
     align-items: center;
 }

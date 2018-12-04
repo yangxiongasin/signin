@@ -182,7 +182,7 @@ function resetLayout() {
         $(".slider-left-item").eq(currentIndex).addClass("slider-item-selected");
 
         $(".slider-left-main").animate({marginLeft:"-"+offset+"px"});
-      }, 3000);
+      }, 10000);
     }
   }
   /*停止轮播*/
