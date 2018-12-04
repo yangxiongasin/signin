@@ -134,11 +134,12 @@ var timeout,
 
 try {
 
-    var ws = new WebSocket("ws://10.21.38.67:58000/chat");
+    var ws = new WebSocket("ws://10.1.226.100:58000/chat");
 
     ws.onmessage = function (e) {
-
-        var data = JSON.parse(e.data);
+        
+        var data = JSON.parse(JSON.parse(e.data));
+        console.log(data, typeof data)
 
         clearTimeout(timeout);
 
@@ -147,7 +148,7 @@ try {
         var id = Math.floor(Math.random() * 100000);
 
         // 载入HTML模板
-        var $dom = $("<iframe class='iframe' src='iframe.html?id=" + id + "' id='" + id + "' scrolling='no'></iframe>").data("data", data);
+        var $dom = $("<iframe class='iframe' src='iframe.html?id=" + id + "' id='" + id + "' scrolling='no' seamless frameborder='0'></iframe>").data("data", data);
 
         switch ($leftContainer.find('.iframe').length) {
             case 0:
@@ -190,7 +191,7 @@ try {
         }
 
         // 20秒后自动销毁识别项
-        timeout = setTimeout(() => {
+        timeout = setTimeout(function() {
             $leftContainer.empty();
             $leftContainer.css('transform', 'translateX(219px)');
         }, 20000);

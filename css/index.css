@@ -111,7 +111,7 @@ body {
 }
 
 .wrap-left .discern-content {
-    width: 10000px;
+    width: 500000px;
     transition: transform 1s ease;
     transform: translateX(219px);
 }
@@ -235,21 +235,11 @@ body {
     background: #00e3d0;
 }
 
-@keyframes in {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
 .iframe {
     margin: 0 25px;
-    width: 173px;
-    height: 240px;
-    animation: in 1s ease;
+    width: 169px;
+    height: 237px;
+    animation: fadeInRight 1s ease;
     animation-fill-mode: both;
     background-color: #FFF;
 }
