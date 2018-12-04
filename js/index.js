@@ -267,7 +267,7 @@ $('.header').click(function () {
             break;
     }
 
-    $leftContainer.css('transform', `translateX(${translateX}px)`);
+    $leftContainer.css('transform', 'translateX('+ translateX +'px)');
     
     $leftContainer.append($dom);
 
@@ -292,7 +292,7 @@ $('.header').click(function () {
     clickFlag = ! clickFlag;
 
     // 20秒后自动销毁识别项
-    timeout = setTimeout(() => {
+    timeout = setTimeout(function() {
         $leftContainer.empty();
         $leftContainer.css('transform', 'translateX(219px)');
     }, 10000);
