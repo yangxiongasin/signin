@@ -23,7 +23,7 @@ body {
     font-family: 'Microsoft Yahei', "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-body:not(.iframe-body) {
+body:not(.wrap-left) {
     width: 1920px;
     height: 1080px;
     overflow: hidden;
@@ -122,6 +122,7 @@ body:not(.iframe-body) {
     color: #FFF;
     font-size: 24px;
     font-weight: bold;
+    z-index: 999;
 }
 
 .wrap-left .discern-container {
@@ -134,42 +135,27 @@ body:not(.iframe-body) {
 }
 
 .wrap-left .discern-content {
-    width: 1000000px;
+    height: 237px;
     transition: transform 1s ease;
     transform: translateX(219px);
+    position: relative;
 }
 
 .customer-card-one {
-    position: absolute;
-    left: 416px;
+    left: 219px;
 }
 
-.customer-card-two {
-    position: absolute;
-    left: 832px;
-}
-
-@keyframes fadeInRight {
-    0% {
-        opacity: 0;
-        transform: translate3d(100%, 0, 0)
-    }
-    to {
-        opacity: 1;
-        transform: none
-    }
-}
-
-.iframe-body .discern-list {
+.wrap-left .discern-list {
     float: left;
     width: 169px;
     height: 237px;
     background-image: url(../image/discern-bg.png);
     background-size: 100%;
     background-repeat: no-repeat;
+    position: absolute;
 }
 
-.iframe-body .discern-list .discern-picture {
+.wrap-left .discern-list .discern-picture {
     position: relative;
     width: 110px;
     height: 110px;
@@ -206,6 +192,12 @@ body:not(.iframe-body) {
     transform: rotate(45deg);
 }
 
+.discern-list .discern-picture {
+    width: 105px;
+    height: 105px;
+    overflow: hidden;
+}
+
 .discern-list .discern-desc {
     color: #00E2CF;
     font-size: 16px;
@@ -213,12 +205,12 @@ body:not(.iframe-body) {
     text-align: center;
 }
 
-.iframe-body .discern-list.success .discern-desc p:nth-child(2) {
+.wrap-left .discern-list.success .discern-desc p:nth-child(2) {
     color: #fff;
     font-size: 20px;
 }
 
-.iframe-body .discern-list.fail .discern-desc p {
+.wrap-left .discern-list.fail .discern-desc p {
     line-height: 48px;
 }
 
@@ -335,4 +327,5 @@ body:not(.iframe-body) {
     width: 169px;
     height: 237px;
     background-color: #00e3d0;
+    position: absolute;
 }
